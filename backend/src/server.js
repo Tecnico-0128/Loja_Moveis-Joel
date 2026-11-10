@@ -12,6 +12,8 @@ import cors from 'cors'
 const app = express()
 
 
+
+
 // app.use((req, res, next) => {
 //   res.header('Access-Control-Allow-Origin', '*')
 //   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
@@ -22,12 +24,22 @@ const app = express()
 //   next()
 // })
 
+
+
+
 app.use(cors())
 app.use(express.json())
+
+
+app.get('/health', (req, res)=>{
+  res.json({message: 'servidor funcionando.', success: true})
+})
+
 
 app.use('/cliente', cliente_routes)
 app.use('/produto', produto_routes)
 app.use('/venda', venda_routes)
+
 
 try {
   await sequelize.authenticate()
