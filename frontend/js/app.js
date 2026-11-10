@@ -133,7 +133,9 @@ async function cli() {
                     clientes.push(cliente)
                     localStorage.setItem("clientes", JSON.stringify(clientes))
 
-                    await fetch('http://localhost:3000/cliente', {
+                    // await fetch('http://localhost:3000/cliente', {
+                    await fetch('https://loja-moveis-joel.onrender.com/cliente', {
+
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(cliente)
@@ -180,7 +182,8 @@ async function pro() {
                     }
                     produtos.push(produto)
 
-                    await fetch('http://localhost:3000/produto', {
+                    // await fetch('http://localhost:3000/produto', {
+                    await fetch('https://loja-moveis-joel.onrender.com/produto', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(produto)
@@ -334,7 +337,8 @@ function venderpd() {
 
 
 async function buscar_cliente() {
-    const busca = await fetch('http://localhost:3000/cliente')
+    // const busca = await fetch('http://localhost:3000/cliente')
+    const busca = await fetch('https://loja-moveis-joel.onrender.com/cliente')
     const dados = await busca.json()
     clientes.length = 0
     clientes.push(...dados)
@@ -342,7 +346,8 @@ async function buscar_cliente() {
 }
 
 async function buscar_venda() {
-    const busca = await fetch('http://localhost:3000/venda')
+    // const busca = await fetch('http://localhost:3000/venda')
+    const busca = await fetch('https://loja-moveis-joel.onrender.com/venda')
     const dados = await busca.json()
     vendas.length = 0
     vendas.push(...dados)
@@ -374,7 +379,9 @@ async function editar_cliente() {
             rua: rua.value ?? c.rua,
             uf: uf.value ?? c.uf
         }
-        let resposta = await fetch(`http://localhost:3000/cliente/${c.cpfoucnpj}`, {
+        
+        // let resposta = await fetch(`http://localhost:3000/cliente/${c.cpfoucnpj}`, {
+        let resposta = await fetch(`https://loja-moveis-joel.onrender.com/cliente/${c.cpfoucnpj}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(cliente_atualizado)
@@ -390,7 +397,9 @@ async function deletar_cliente() {
 
     if (c) {
 
-        let resposta = await fetch(`http://localhost:3000/cliente/${c.cpfoucnpj}`, {
+        
+        // let resposta = await fetch(`http://localhost:3000/cliente/${c.cpfoucnpj}`, {
+            let resposta = await fetch(`https://loja-moveis-joel.onrender.com/cliente/${c.cpfoucnpj}`, {
             method: "DELETE"
 
         })
@@ -401,7 +410,9 @@ async function deletar_cliente() {
 
 
 async function buscar_produto() {
-    const busca = await fetch('http://localhost:3000/produto')
+    
+    // const busca = await fetch('http://localhost:3000/produto')
+    const busca = await fetch('https://loja-moveis-joel.onrender.com/produto')
     const dados = await busca.json()
     produtos.length = 0
     produtos.push(...dados)
@@ -431,7 +442,8 @@ async function comp_produto() {
 
     produtos.push(produto_compra)
     localStorage.setItem("produtos", JSON.stringify(produtos));
-    let resposta = await fetch(`http://localhost:3000/produto/${pd.nome_produto}`, {
+    // let resposta = await fetch(`http://localhost:3000/produto/${pd.nome_produto}`, {
+    let resposta = await fetch(`https://loja-moveis-joel.onrender.com/produto/${pd.nome_produto}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(produto_compra)
@@ -483,8 +495,10 @@ async function vend_produto() {
     localStorage.setItem("vendas", JSON.stringify(vendas))
     produtos.push(produto_venda)
     localStorage.setItem("produtos", JSON.stringify(produtos));
+    
 
-    let resposta = await fetch(`http://localhost:3000/produto/${pd.nome_produto}`, {
+    // let resposta = await fetch(`http://localhost:3000/produto/${pd.nome_produto}`, {
+    let resposta = await fetch(`https://loja-moveis-joel.onrender.com/produto/${pd.nome_produto}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(produto_venda)
@@ -492,7 +506,8 @@ async function vend_produto() {
     alert("Venda de => " + qtdvenda + " <= unidade(s) do produto => " + pd.nome_produto + " <= executada com sucesso, estoque final de => " + (pd.quantidade - qtdvenda))
 
 
-    let respostaVenda = await fetch('http://localhost:3000/venda', {
+    // let respostaVenda = await fetch('http://localhost:3000/venda', {
+        let respostaVenda = await fetch('https://loja-moveis-joel.onrender.com/venda', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(registro_venda)
