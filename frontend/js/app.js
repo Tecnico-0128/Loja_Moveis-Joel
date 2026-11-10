@@ -342,7 +342,7 @@ async function buscar_cliente() {
     const dados = await busca.json()
     clientes.length = 0
     clientes.push(...dados)
-    
+
 }
 
 async function buscar_venda() {
@@ -379,7 +379,7 @@ async function editar_cliente() {
             rua: rua.value ?? c.rua,
             uf: uf.value ?? c.uf
         }
-        
+
         // let resposta = await fetch(`http://localhost:3000/cliente/${c.cpfoucnpj}`, {
         let resposta = await fetch(`https://loja-moveis-joel.onrender.com/cliente/${c.cpfoucnpj}`, {
             method: "PUT",
@@ -397,9 +397,9 @@ async function deletar_cliente() {
 
     if (c) {
 
-        
+
         // let resposta = await fetch(`http://localhost:3000/cliente/${c.cpfoucnpj}`, {
-            let resposta = await fetch(`https://loja-moveis-joel.onrender.com/cliente/${c.cpfoucnpj}`, {
+        let resposta = await fetch(`https://loja-moveis-joel.onrender.com/cliente/${c.cpfoucnpj}`, {
             method: "DELETE"
 
         })
@@ -410,7 +410,7 @@ async function deletar_cliente() {
 
 
 async function buscar_produto() {
-    
+
     // const busca = await fetch('http://localhost:3000/produto')
     const busca = await fetch('https://loja-moveis-joel.onrender.com/produto')
     const dados = await busca.json()
@@ -495,7 +495,7 @@ async function vend_produto() {
     localStorage.setItem("vendas", JSON.stringify(vendas))
     produtos.push(produto_venda)
     localStorage.setItem("produtos", JSON.stringify(produtos));
-    
+
 
     // let resposta = await fetch(`http://localhost:3000/produto/${pd.nome_produto}`, {
     let resposta = await fetch(`https://loja-moveis-joel.onrender.com/produto/${pd.nome_produto}`, {
@@ -507,7 +507,7 @@ async function vend_produto() {
 
 
     // let respostaVenda = await fetch('http://localhost:3000/venda', {
-        let respostaVenda = await fetch('https://loja-moveis-joel.onrender.com/venda', {
+    let respostaVenda = await fetch('https://loja-moveis-joel.onrender.com/venda', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(registro_venda)
