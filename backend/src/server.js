@@ -7,7 +7,6 @@ import './models/bd_cliente.js'
 import './models/bd_produto.js'
 import './models/bd_venda.js'
 import cors from 'cors'
-const cors = require('cors');
 
 const app = express()
 
@@ -25,11 +24,12 @@ const app = express()
 
 
 app.use(cors())
+const cors = require('cors');
 app.use(express.json())
 
 
-app.get('/health', (req, res)=>{
-  res.json({message: 'servidor funcionando.', success: true})
+app.get('/health', (req, res) => {
+  res.json({ message: 'servidor funcionando.', success: true })
 })
 
 
