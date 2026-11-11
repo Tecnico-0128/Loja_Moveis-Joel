@@ -10,38 +10,23 @@ import cors from 'cors'
 
 const app = express()
 
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*')
-//   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
-//   if (req.method === 'OPTIONS') {
-//     return res.sendStatus(200)
-//   }
-//   next()
-// })
-
-
-
-
 app.use(cors())
-const cors = require('cors');
 app.use(express.json())
-
 
 app.get('/health', (req, res) => {
   res.json({ message: 'servidor funcionando.', success: true })
 })
 
-
 app.use('/cliente', cliente_routes)
 app.use('/produto', produto_routes)
 app.use('/venda', venda_routes)
 
+const PORT = process.env.PORT || 3000
 
 try {
   await sequelize.authenticate()
   await sequelize.sync()
-  app.listen(3000, () => console.log('\x1b[1;4;36m', 'Server inicializado na porta 3000.'))
+  app.listen(PORT, () => console.log('\x1b[1;4;36m', `Server inicializado na porta ${PORT}.`))
 } catch (erro) {
   console.error('Falha ao Iniciar:', erro)
   process.exit(1)
