@@ -80,6 +80,12 @@ git remote add origin https://github.com/JoelGSN/newlojamoveis.git
 git pull origin main --rebase
 git push origin main   
 
+reset downgrade commit do github
+
+git log --oneline
+
+git reset --hard c89de12
+
 
 
 

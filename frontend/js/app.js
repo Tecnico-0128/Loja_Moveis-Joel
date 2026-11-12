@@ -29,9 +29,20 @@ const vendas = JSON.parse(localStorage.getItem("vendas")) || []
 const nomev = document.getElementById("nomecv")
 const quantidadev = document.getElementById("quantidadecv")
 
-buscar_cliente()
-buscar_produto()
-buscar_venda();
+const url_geral = 'https://loja-moveis-joel.onrender.com'
+// http://localhost:3000
+// https://loja-moveis-joel.onrender.com
+
+
+async function iniciarSistema() {
+    await buscar_cliente();
+    await buscar_produto();
+    await buscar_venda();
+
+    console.log("Sistema carregado!");
+}
+
+iniciarSistema();
 
 //ABA DE RELATÓRIOS INICIO
 //PARTE DOS BOTÕES INICIO
@@ -114,12 +125,12 @@ function relatorio() {
 //ABA DE RELATÓRIOS FIM
 //ABA DE CLIENTES INICIO
 async function cli() {
-    if (nomec.value.trim() && cpf.value.trim() && rua.value.trim() && numero.value.trim() && uf.value.trim) {
+    if (nomec.value.trim() && cpf.value.trim() && rua.value.trim() && numero.value.trim() && uf.value.trim()) {
         if (/^[A-Za-zÁ-ý\s]+$/.test(nomec.value)) {
             if (/^\d{11}$/.test(cpf.value) || /^\d{14}$/.test(cpf.value) || /^\d{18}$/.test(cpf.value)) {
                 let existe = false
                 for (let cliente of clientes) {
-                    if (cliente.cpf == cpf.value)
+                    if (cliente.cpfoucnpj == cpf.value)
                         existe = true
                 }
                 if (!existe) {
@@ -134,7 +145,7 @@ async function cli() {
                     localStorage.setItem("clientes", JSON.stringify(clientes))
 
                     // await fetch('http://localhost:3000/cliente', {
-                    await fetch('https://loja-moveis-joel.onrender.com/cliente', {
+                    await fetch(`${url_geral}/cliente`, {
 
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -143,11 +154,11 @@ async function cli() {
 
 
                     alert(`Cadastro ({ ${nomec.value} }) efetuado com Sucesso!!`)
-                    nomec = ""
-                    cpf = ""
-                    rua = ""
-                    numero = ""
-                    uf = ""
+                    nomec.value = ""
+                    cpf.value = ""
+                    rua.value = ""
+                    numero.value = ""
+                    uf.value = ""
 
                 } else alert("Cliente já foi cadastrado!")
             } else alert("deve conter apenas 11 digitos caso for CPF ou 14 digitos caso for CNPJ")
@@ -183,7 +194,7 @@ async function pro() {
                     produtos.push(produto)
 
                     // await fetch('http://localhost:3000/produto', {
-                    await fetch('https://loja-moveis-joel.onrender.com/produto', {
+                    await fetch(`${url_geral}/produto`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(produto)
@@ -191,11 +202,11 @@ async function pro() {
 
                     localStorage.setItem("produtos", JSON.stringify(produtos))
                     alert(`Produto ({ ${nomep.value} }) Cadastrado com sucesso!`)
-                    nomep = ""
-                    tipo = ""
-                    cor = ""
-                    preco = ""
-                    quantidade = ""
+                    nomep.value = ""
+                    tipo.value = ""
+                    cor.value = ""
+                    preco.value = ""
+                    quantidade.value = ""
                 } else alert("Produto ja Cadastrado!")
             } else alert("Quantidade não pode ser negativa")
         } else alert("Valor não pode ser 0 ou negativo")
@@ -217,7 +228,7 @@ function buscliente() {
     if (existe) {
         alert("Cliente " + cliente.nome + " Localizado")
         nomec.value = cliente.nome
-        cpf.value = cliente.cpf
+        cpf.value = cliente.cpfoucnpj
         rua.value = cliente.rua
         numero.value = cliente.numero
         uf.value = cliente.uf
@@ -236,12 +247,12 @@ function alterarcl() {
         }
     }
     localStorage.setItem("clientes", JSON.stringify(clientes))
-    alert(`Alteração do Cliente " ${nome.value} " Efetuada Com Sucesso!!!`)
-    nomec = ""
-    cpf = ""
-    rua = ""
-    numero = ""
-    uf = ""
+    alert(`Alteração do Cliente " ${nomec.value} " Efetuada Com Sucesso!!!`)
+    nomec.value = ""
+    cpf.value = ""
+    rua.value = ""
+    numero.value = ""
+    uf.value = ""
 
 }
 function clidelete() {
@@ -313,6 +324,7 @@ function venderpd() {
             vendas.push(venda)
             localStorage.setItem("vendas", JSON.stringify(vendas))
             produtos.push(produto)
+            // localStorage.setItem("produtos", JSON.stringify(produtos));
             localStorage.setItem("produtos", JSON.stringify(produtos));
 
             // alert("Alterado de "+qtd_antiga+" para "+ idpd.value+" ou "+produto.quantidade);
@@ -338,7 +350,7 @@ function venderpd() {
 
 async function buscar_cliente() {
     // const busca = await fetch('http://localhost:3000/cliente')
-    const busca = await fetch('https://loja-moveis-joel.onrender.com/cliente')
+    const busca = await fetch(`${url_geral}/cliente`)
     const dados = await busca.json()
     clientes.length = 0
     clientes.push(...dados)
@@ -347,7 +359,7 @@ async function buscar_cliente() {
 
 async function buscar_venda() {
     // const busca = await fetch('http://localhost:3000/venda')
-    const busca = await fetch('https://loja-moveis-joel.onrender.com/venda')
+    const busca = await fetch(`${url_geral}/venda`)
     const dados = await busca.json()
     vendas.length = 0
     vendas.push(...dados)
@@ -373,15 +385,15 @@ async function editar_cliente() {
     const c = await clientes.find(item => item.cpfoucnpj === cpf.value)
     if (c) {
         let cliente_atualizado = {
-            nome: nomec.value ?? c.nome,
-            cpfoucnpj: cpf.value ?? c.cpfoucnpj,
-            numero: numero.value ?? c.numero,
-            rua: rua.value ?? c.rua,
-            uf: uf.value ?? c.uf
+            nome: nomec.value.trim() || c.nome,
+            cpfoucnpj: cpf.value.trim() || c.cpfoucnpj,
+            numero: numero.value.trim() || c.numero,
+            rua: rua.value.trim() || c.rua,
+            uf: uf.value.trim() || c.uf
         }
 
         // let resposta = await fetch(`http://localhost:3000/cliente/${c.cpfoucnpj}`, {
-        let resposta = await fetch(`https://loja-moveis-joel.onrender.com/cliente/${c.cpfoucnpj}`, {
+        let resposta = await fetch(`${url_geral}/cliente/${c.cpfoucnpj}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(cliente_atualizado)
@@ -399,7 +411,7 @@ async function deletar_cliente() {
 
 
         // let resposta = await fetch(`http://localhost:3000/cliente/${c.cpfoucnpj}`, {
-        let resposta = await fetch(`https://loja-moveis-joel.onrender.com/cliente/${c.cpfoucnpj}`, {
+        let resposta = await fetch(`${url_geral}/cliente/${c.cpfoucnpj}`, {
             method: "DELETE"
 
         })
@@ -412,7 +424,7 @@ async function deletar_cliente() {
 async function buscar_produto() {
 
     // const busca = await fetch('http://localhost:3000/produto')
-    const busca = await fetch('https://loja-moveis-joel.onrender.com/produto')
+    const busca = await fetch(`${url_geral}/produto`)
     const dados = await busca.json()
     produtos.length = 0
     produtos.push(...dados)
@@ -440,10 +452,16 @@ async function comp_produto() {
         quantidade: Number(pd.quantidade) + vlrsoma
     }
 
-    produtos.push(produto_compra)
+    // produtos.push(produto_compra)
+    // localStorage.setItem("produtos", JSON.stringify(produtos));
+
+    pd.quantidade = produto_compra.quantidade;
+
     localStorage.setItem("produtos", JSON.stringify(produtos));
+
+
     // let resposta = await fetch(`http://localhost:3000/produto/${pd.nome_produto}`, {
-    let resposta = await fetch(`https://loja-moveis-joel.onrender.com/produto/${pd.nome_produto}`, {
+    let resposta = await fetch(`${url_geral}/produto/${pd.nome_produto}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(produto_compra)
@@ -466,8 +484,13 @@ async function vend_produto() {
 
     const pd = await produtos.find(prod => (prod.nome_produto === nmcv.value))
 
-    if (!pd && qtdvenda) {
+    if (!pd) {
         alert("Produto não encontrado!");
+        return;
+    }
+
+    if (qtdvenda <= 0) {
+        alert("Informe uma quantidade válida!");
         return;
     }
 
@@ -493,12 +516,13 @@ async function vend_produto() {
 
     vendas.push(registro_venda)
     localStorage.setItem("vendas", JSON.stringify(vendas))
-    produtos.push(produto_venda)
+    // produtos.push(produto_venda)
+    pd.quantidade = produto_venda.quantidade;
     localStorage.setItem("produtos", JSON.stringify(produtos));
 
 
     // let resposta = await fetch(`http://localhost:3000/produto/${pd.nome_produto}`, {
-    let resposta = await fetch(`https://loja-moveis-joel.onrender.com/produto/${pd.nome_produto}`, {
+    let resposta = await fetch(`${url_geral}/produto/${pd.nome_produto}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(produto_venda)
@@ -507,7 +531,7 @@ async function vend_produto() {
 
 
     // let respostaVenda = await fetch('http://localhost:3000/venda', {
-    let respostaVenda = await fetch('https://loja-moveis-joel.onrender.com/venda', {
+    let respostaVenda = await fetch(`${url_geral}/venda`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(registro_venda)
@@ -515,7 +539,7 @@ async function vend_produto() {
 
 
 }
-vend_produto()
+// vend_produto()
 
 
 

@@ -7,6 +7,7 @@ import './models/bd_cliente.js'
 import './models/bd_produto.js'
 import './models/bd_venda.js'
 import cors from 'cors'
+const porta = 3000
 
 const app = express()
 
@@ -21,12 +22,19 @@ app.use('/cliente', cliente_routes)
 app.use('/produto', produto_routes)
 app.use('/venda', venda_routes)
 
-const PORT = process.env.PORT || 3000
+
 
 try {
   await sequelize.authenticate()
   await sequelize.sync()
-  app.listen(PORT, () => console.log('\x1b[1;4;36m', `Server inicializado na porta ${PORT}.`))
+  app.listen(3000, () => {
+    console.log('\x1b[36m%s\x1b[0m', '==========================================================')
+    console.log('\x1b[33m', '                            (\\____/)')
+    console.log('\x1b[33m', '                            (=^__^=) ')
+    console.log('\x1b[33m', `                  (3 Server Online na porta ${porta} Ɛ)           `)
+    console.log('\x1b[33m', "                          (''')____(''')")
+    console.log('\x1b[36m%s\x1b[0m', '==========================================================')
+  })
 } catch (erro) {
   console.error('Falha ao Iniciar:', erro)
   process.exit(1)
